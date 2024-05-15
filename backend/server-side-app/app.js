@@ -16,8 +16,7 @@ const app = express();
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
 
-const mongoDB_URI =
-  "mongodb+srv://user123:pass123@cluster0.e2sn4dk.mongodb.net/web_accessbility?retryWrites=true&w=majority&appName=Cluster0";
+const mongoDB_URI = "<insert-mongo-connection-string>";
 
 main().catch((err) => console.log(err));
 async function main() {

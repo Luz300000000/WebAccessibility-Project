@@ -88,7 +88,7 @@ export class EvaluationFormComponent implements OnInit {
       
       let pages = this.getSelectedPages();
       this.getSelectedWebsite();
-      await sleep(200);
+      await sleep(300);
 
       // --- update before evaluations ---
       // website
@@ -110,30 +110,26 @@ export class EvaluationFormComponent implements OnInit {
       // website
       this.website!.lastEvaluationDate = evaluationDateTime;
       this.updateWebsite();
+
       // pages
-      console.log(this.evaluations);
       pages.forEach(page => {
         this.evaluations.forEach(evaluation => {
           if (evaluation === undefined) {
             page.state = 'Erro na avaliação';
           } else {
-            if (this.website!.state !== "Avaliado") {
-              this.website!.state = "Avaliado";
-              this.updateWebsite();
-            }
-            
-            if (evaluation.pageURL === page.url) {
+            this.website!.state = "Avaliado";
+              
               if (evaluation.pageData.errorsAAA > 0)
                 page.state = 'Não conforme';
               else
-              page.state = 'Conforme';
-            }
+                page.state = 'Conforme';
           }
           
         });
         page.lastEvaluationDate = evaluationDateTime;
         this.updatePage(page);
       });
+      this.updateWebsite();
     }
     startEvaluationAsync();
   }
