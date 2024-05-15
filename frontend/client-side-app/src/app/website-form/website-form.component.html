@@ -1,0 +1,61 @@
+<mat-card class="card-container">
+    <mat-card-header>
+      <mat-card-title>Website Information</mat-card-title>
+      <mat-card-subtitle>(Adding pages to the Website is optional, it can also be added later on Website Details)</mat-card-subtitle>
+    </mat-card-header>
+  
+    <mat-card-content>
+          <form class="full-width" (ngSubmit)="onSubmit(); urlFormControl.reset()">
+            <mat-stepper class="stepper">
+              <mat-step label="Enter Website URL">
+                <form>
+                  <mat-form-field appearance="fill">
+                    <mat-label>Website URL</mat-label>
+                    <input id="insert-url" type="url" matInput [formControl]="urlFormControl" placeholder="Ex. www.example.com">
+                    <mat-error *ngIf="urlFormControl.hasError('pattern') && !urlFormControl.hasError('required')">
+                      Please enter a valid URL
+                    </mat-error>
+                    <mat-error *ngIf="urlFormControl.hasError('required')">
+                      URL is <strong>required</strong>
+                    </mat-error>
+                    <button *ngIf="urlFormControl.value" matSuffix mat-icon-button aria-label="Clear" (click)="urlFormControl.reset()">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </mat-form-field>
+                  <div>
+                    <button mat-button matStepperNext>Next</button>
+                  </div>
+                </form>
+              </mat-step>
+              <mat-step label="Add Pages" optional>
+                <form>
+                  <mat-form-field>
+                    <mat-label>Page URL</mat-label>
+                    <input matInput [formControl]="pageFormControl" placeholder="Ex. www.example.com/page">
+                    <mat-error *ngIf="pageFormControl.hasError('pattern')">
+                      Please enter a valid URL
+                    </mat-error>
+                    <button *ngIf="pageFormControl.value" matSuffix mat-icon-button aria-label="Clear" (click)="pageFormControl.reset()">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </mat-form-field>
+                  <div>
+                    <button mat-button matStepperPrevious>Back</button>
+                    <button mat-button matStepperNext>Next</button>
+                    <button id="add-page" mat-button color="primary" [disabled]="!pageFormControl.value || !pageFormControl.valid" (click)="addPageURL(); pageFormControl.reset()">Add page</button>
+                    <button id="reset-page" mat-button color="primary" [disabled]="pagesURLs.length === 0" (click)="resetPagesURLs()">Clean pages</button>
+                  </div>
+                </form>
+              </mat-step>
+              <mat-step>
+                <ng-template matStepLabel>Submit</ng-template>
+                <p>The entered fields will be submited.</p>
+                <div>
+                  <button mat-button matStepperPrevious>Back</button>
+                  <button id="submit-button" type="submit" mat-raised-button color="primary" [disabled]="!urlFormControl.valid">Submit</button>
+                </div>
+              </mat-step>
+            </mat-stepper>
+          </form>
+    </mat-card-content>
+</mat-card>

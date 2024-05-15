@@ -1,0 +1,33 @@
+.full-width {
+    width: 100%;
+}
+
+.card-container {
+    height: 80%;
+}
+
+.mat-radio-button {
+    display: block;
+    margin: 5px 0;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+mat-form-field {
+    width: 50%;
+    min-width: 350px;
+    height: min-content;
+}
+
+.mat-stepper-horizontal {
+    margin-top: 20px;
+    width: 60%;
+}
+  
+.mat-mdc-form-field {
+    margin-top: 14px;
+    height: 100%;
+}

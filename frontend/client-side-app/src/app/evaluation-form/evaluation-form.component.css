@@ -1,0 +1,23 @@
+.card-container {
+    height: 12em;
+}
+
+form {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    margin-top: 20px;
+}
+
+mat-card-actions {
+    margin: 6px;
+}
+
+mat-form-field {
+    display: flex;
+    width: 20em;
+}
+
+#select-pages {
+    width: 40em;
+}

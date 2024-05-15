@@ -1,0 +1,26 @@
+<mat-drawer-container class="main-container">
+	<mat-toolbar color="primary">
+	  <button
+		mat-icon-button
+		class="menu-icon"
+		aria-label="Menu icon"
+		(click)="drawer.toggle()"
+	  >
+		<mat-icon
+		  aria-hidden="false"
+		  aria-label="Chevron Animation"
+		  >menu
+		</mat-icon>
+	  </button>
+	  <span>{{ currentPage }}</span>
+	</mat-toolbar>
+  
+	<mat-drawer #drawer class="sidenav" mode="side">
+	  <mat-nav-list>
+		<a mat-list-item routerLink="/register-websites" [routerLinkActive]="'active-link'" (click)="drawer.close()">Register Websites </a>
+		<a mat-list-item routerLink="/websites" [routerLinkActive]="'active-link'" (click)="drawer.close()">Websites</a>
+		<a mat-list-item routerLink="/new-evaluation" [routerLinkActive]="'active-link'" (click)="drawer.close()">New Evaluation</a>
+	  </mat-nav-list>
+	</mat-drawer>
+	<router-outlet></router-outlet>
+</mat-drawer-container>

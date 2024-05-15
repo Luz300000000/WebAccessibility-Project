@@ -1,0 +1,199 @@
+<mat-card class="card-container">
+	<mat-card-header>
+		<mat-card-title>Website Details</mat-card-title>
+	</mat-card-header>
+
+	<mat-card-content>
+		<mat-tab-group class="tab-container">
+			<mat-tab label="Website Information">
+				<mat-list>
+					<mat-list-item>
+					  <span matListItemTitle>URL</span>
+					  <span matListItemLine>{{website?.url}}</span>
+					</mat-list-item>
+					<mat-list-item>
+					  <span matListItemTitle>Data de Criação</span>
+					  <span matListItemLine>{{website?.createdDate}}</span>
+					</mat-list-item>
+					<mat-list-item>
+					  <span matListItemTitle>Data da Última Avaliação</span>
+					  <span matListItemLine>{{website?.lastEvaluationDate}}</span>
+					</mat-list-item>
+					<mat-list-item>
+						<span matListItemTitle>Estado de Monitorização</span>
+						<span matListItemLine>{{website?.state}}</span>
+					  </mat-list-item>
+				  </mat-list>
+			</mat-tab>
+			<mat-tab label="Website Pages">
+				<table mat-table [dataSource]="pages" matSort (matSortChange)="sortData($event)">
+
+					<!-- Checkbox Column -->
+					<ng-container matColumnDef="select">
+					  <th mat-header-cell *matHeaderCellDef>
+						<div class="header-buttons">
+							<mat-checkbox (change)="$event ? toggleAllRows() : null"
+										  [checked]="selection.hasValue() && isAllSelected()"
+										  [indeterminate]="selection.hasValue() && !isAllSelected()"
+										  [aria-label]="checkboxLabel()"
+										  color="primary">
+							</mat-checkbox>
+							<button id="delete-pages"mat-icon-button aria-label="Delete page icon"
+									color="primary"
+									#tooltip="matTooltip"
+									matTooltipPosition="right"
+									matTooltip="Delete selected page(s)"
+									[disabled]="selection.selected.length == 0"
+									(click)="deleteSelectedPages()">
+								<mat-icon>delete</mat-icon>
+							</button>
+						</div>
+					  </th>
+					  <td mat-cell *matCellDef="let row">
+						<mat-checkbox (click)="$event.stopPropagation()"
+									  (change)="$event ? selection.toggle(row) : null"
+									  [checked]="selection.isSelected(row)"
+									  [aria-label]="checkboxLabel(row)"
+									  color="primary">
+						</mat-checkbox>
+					  </td>
+					</ng-container>
+				  
+					<!-- Data Columns -->
+					<ng-container matColumnDef="url">
+					  <th mat-header-cell *matHeaderCellDef> URL </th>
+					  <td mat-cell *matCellDef="let website"> {{website.url}} </td>
+					</ng-container>
+				  
+					<ng-container matColumnDef="createdDate">
+					  <th mat-header-cell *matHeaderCellDef>
+						<div mat-sort-header>
+						  Data de Registo
+						</div>
+					  </th>
+					  <td mat-cell *matCellDef="let website"> {{website.createdDate}} </td>
+					</ng-container>
+				  
+					<ng-container matColumnDef="lastEvaluationDate">
+					  <th mat-header-cell *matHeaderCellDef>
+						<div mat-sort-header>
+						  Data da Última Avaliação
+						</div>
+					  </th>
+					  <td mat-cell *matCellDef="let website"> {{website.lastEvaluationDate}} </td>
+					</ng-container>
+				  
+					<ng-container matColumnDef="state">
+					  <th mat-header-cell *matHeaderCellDef> Estado de Monitorização </th>
+					  <td mat-cell *matCellDef="let website"> {{website.state}} </td>
+					</ng-container>
+				  
+					<tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+					<tr mat-row *matRowDef="let row; columns: displayedColumns;"
+						(click)="selection.toggle(row)">
+					</tr>
+
+				</table>
+			</mat-tab>
+			<mat-tab label="Website Accessibility">
+				<div *ngIf="websiteData !== undefined">
+					<mat-accordion>
+						<mat-expansion-panel>
+							<mat-expansion-panel-header>
+							<mat-panel-title>
+								Accessibility Indicator (no errors)
+							</mat-panel-title>
+							<mat-panel-description>
+								Total and percentage of pages with no accessibility errors
+							</mat-panel-description>
+							</mat-expansion-panel-header>
+							<p><strong>Total:</strong> {{websiteData['no-errors'][0]}}</p>
+							<p><strong>Percentage:</strong> {{websiteData['no-errors'][1]}}%</p>
+						</mat-expansion-panel>
+
+						<mat-expansion-panel>
+							<mat-expansion-panel-header>
+							<mat-panel-title>
+								Accessibility Indicator (at least one error)
+							</mat-panel-title>
+							<mat-panel-description>
+								Total and percentage of pages with at least one accessibility error
+							</mat-panel-description>
+							</mat-expansion-panel-header>
+							<p><strong>Total:</strong> {{websiteData.errors[0]}}</p>
+							<p><strong>Percentage:</strong> {{websiteData.errors[1]}}%</p>
+						</mat-expansion-panel>
+
+						<mat-expansion-panel>
+							<mat-expansion-panel-header>
+							<mat-panel-title>
+								Accessibility Indicator (at least one A error)
+							</mat-panel-title>
+							<mat-panel-description>
+								Total and percentage of pages with at least one accessibility A error
+							</mat-panel-description>
+							</mat-expansion-panel-header>
+							<p><strong>Total:</strong> {{websiteData.errorsA[0]}}</p>
+							<p><strong>Percentage:</strong> {{websiteData.errorsA[1]}}%</p>
+						</mat-expansion-panel>
+
+						<mat-expansion-panel>
+							<mat-expansion-panel-header>
+							<mat-panel-title>
+								Accessibility Indicator (at least one AA error)
+							</mat-panel-title>
+							<mat-panel-description>
+								Total and percentage of pages with at least one accessibility AA error
+							</mat-panel-description>
+							</mat-expansion-panel-header>
+							<p><strong>Total:</strong> {{websiteData.errorsAA[0]}}</p>
+							<p><strong>Percentage:</strong> {{websiteData.errorsAA[1]}}%</p>
+						</mat-expansion-panel>
+
+						<mat-expansion-panel>
+							<mat-expansion-panel-header>
+							<mat-panel-title>
+								Accessibility Indicator (at least one AAA error)
+							</mat-panel-title>
+							<mat-panel-description>
+								Total and percentage of pages with at least one accessibility AAA error
+							</mat-panel-description>
+							</mat-expansion-panel-header>
+							<p><strong>Total:</strong> {{websiteData.errorsAAA[0]}}</p>
+							<p><strong>Percentage:</strong> {{websiteData.errorsAAA[1]}}%</p>
+						</mat-expansion-panel>
+					</mat-accordion>
+				</div>
+			</mat-tab>
+			<mat-tab label="Add New Pages">
+				<form (ngSubmit)="onSubmit();">
+					<mat-form-field class="add-pages">
+						<mat-label>Page URL</mat-label>
+						<input matInput [formControl]="pageFormControl" placeholder="Ex. www.example.com/page">
+						<mat-error *ngIf="pageFormControl.hasError('pattern')">
+							Please enter a valid URL
+						</mat-error>
+						<button *ngIf="pageFormControl.value" matSuffix mat-icon-button aria-label="Clear" (click)="pageFormControl.reset()">
+						<mat-icon>close</mat-icon>
+						</button>
+					</mat-form-field>
+					<button id="submit-button" #add_page type="submit" mat-raised-button color="primary"
+							[disabled]="!pageFormControl.valid || pageFormControl.value === ''|| pageFormControl.value === null">
+							Add Page
+					</button>
+				</form>
+			</mat-tab>
+		</mat-tab-group>
+	</mat-card-content>
+	<mat-card-actions align="start" >
+		<button mat-button (click)="goBack()">Back</button>
+		<button id="delete-website" mat-fab extended color="primary" aria-label="Delete Website button with delete icon"
+				#tooltip="matTooltip"
+				matTooltipPosition="below"
+				matTooltip="Delete this website"
+				(click)="confirmDelete('0ms', '0ms')">
+			<mat-icon>delete</mat-icon>
+			Delete Website
+		</button>
+	</mat-card-actions>
+</mat-card>

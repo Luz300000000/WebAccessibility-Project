@@ -1,0 +1,66 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Monitored Websites</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+
+    <mat-form-field class="state-filter" appearance="outline">
+      <mat-label>Filter by State</mat-label>
+      <mat-select [(ngModel)]="estadoFiltrado" (selectionChange)="applyFilter()">
+        <mat-option value="">Todos</mat-option>
+        <mat-option value="Por avaliar">Por avaliar</mat-option>
+        <mat-option value="Em avaliação">Em avaliação</mat-option>
+        <mat-option value="Avaliado">Avaliado</mat-option>
+        <mat-option value="Erro na avaliação">Erro na avaliação</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div class="table-container">
+
+      <table mat-table [dataSource]="filteredWebsites" matSort (matSortChange)="sortData($event)">
+
+        <!-- Checkbox Column -->
+        <ng-container matColumnDef="select">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let row"></td>
+        </ng-container>
+      
+        <!-- Data Columns -->
+        <ng-container matColumnDef="url">
+          <th mat-header-cell *matHeaderCellDef> URL </th>
+          <td mat-cell *matCellDef="let website"> {{website.url}} </td>
+        </ng-container>
+      
+        <ng-container matColumnDef="createdDate">
+          <th mat-header-cell *matHeaderCellDef>
+            <div mat-sort-header>
+              Data de Registo
+            </div>
+          </th>
+          <td mat-cell *matCellDef="let website"> {{website.createdDate}} </td>
+        </ng-container>
+      
+        <ng-container matColumnDef="lastEvaluationDate">
+          <th mat-header-cell *matHeaderCellDef>
+            <div mat-sort-header>
+              Data da Última Avaliação
+            </div>
+          </th>
+          <td mat-cell *matCellDef="let website"> {{website.lastEvaluationDate}} </td>
+        </ng-container>
+      
+        <ng-container matColumnDef="state">
+          <th mat-header-cell *matHeaderCellDef> Estado de Monitorização </th>
+          <td mat-cell *matCellDef="let website"> {{website.state}} </td>
+        </ng-container>
+      
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+            routerLink="/website/{{row._id}}" (keydown.enter)="navigateToWebsite(row._id)">
+        </tr>
+      </table>
+    </div>
+      
+  </mat-card-content>
+</mat-card>

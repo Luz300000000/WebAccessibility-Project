@@ -1,0 +1,35 @@
+table {
+	width: 100%;
+}
+  
+.mat-mdc-form-field {
+font-size: 14px;
+width: 100%;
+}
+
+td, th {
+width: 25%;
+}
+
+th.mat-sort-header-sorted {
+  color: black;
+}
+
+.mat-column-select {
+  overflow: initial;
+}
+
+.table-container {
+  height: 80%;
+  overflow: auto;
+}
+
+.mat-mdc-row:hover {
+  cursor: pointer;
+  background-color: #f5f5f5;
+}
+
+.state-filter {
+  margin-top: 25px;
+  width: 200px;
+}

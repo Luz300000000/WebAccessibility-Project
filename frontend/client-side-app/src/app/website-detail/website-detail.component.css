@@ -1,0 +1,39 @@
+.card-container {
+	height: 55%;
+	display: flex;
+	align-content: baseline;
+}
+
+.tab-container {
+	width: 100%;
+}
+
+mat-card-actions {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	margin-top: auto;
+}
+
+.header-buttons {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+#delete-pages {
+	margin-bottom: 1px;
+}
+
+.pages-list {
+	width: 100%;
+}
+
+.mat-mdc-form-field {
+	margin-top: 30px;
+    width: 100%;
+}
+
+form {
+	height: 150px;
+}
