@@ -15,9 +15,14 @@
 - All websites, pages and evaluations are kept in the DB
 ---
 ### Additional Note
-- To run the project a mongo server must be prepared and the uri to be set in the backend (`app.js`) as the following:
+- **To run the project**
+  - Prepare mongo server set the URI in the backend (`app.js`) as the following:
 ```
 const mongoDB_URI = <mongo-connection-string>;
+```
+- Install all necessary npm packages:
+```
+> npm install
 ```
 ### Tech Stack
 - HTML/CSS/Javascript
