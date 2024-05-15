@@ -1,5 +1,5 @@
 ## Description
-The main goal of this project is to develop a web accessibility monitoring platform, aimed at website webmasters, which allows the evaluation and continuous monitoring of the accessibility of web pages. The platform must be able to receive as input the address of a website and the specific pages to be monitored, providing indicators relating to the accessibility of these pages.
+- The main goal of this project is to develop a web accessibility monitoring platform, aimed at website webmasters, which allows the evaluation and continuous monitoring of the accessibility of web pages. The platform must be able to receive as input the address of a website and the specific pages to be monitored, providing indicators relating to the accessibility of these pages.
 
 ## Main Features
 - Register websites and pages (associated to websites) to be monitored
@@ -13,7 +13,12 @@ The main goal of this project is to develop a web accessibility monitoring platf
   - Total and percentage of pages with at least one accessibility AA error
   - Total and percentage of pages with at least one accessibility AAA error
 - All websites, pages and evaluations are kept in the DB
-
+---
+### Additional Note
+- To run the project a mongo server must be prepared and the uri to be set in the backend (`app.js`) as the following:
+```
+const mongoDB_URI = <mongo-connection-string>;
+```
 ### Tech Stack
 - HTML/CSS/Javascript
 - Typescript
