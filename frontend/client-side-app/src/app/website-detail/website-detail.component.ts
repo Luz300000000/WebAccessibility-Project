@@ -32,7 +32,7 @@ export class WebsiteDetailComponent implements OnInit {
   selection = new SelectionModel<Page>(true, []);
   displayedColumns: string[] = ['select', 'url', 'createdDate', 'lastEvaluationDate', 'state'];
 
-  websiteData: any;
+  websiteData: any = undefined;
 
   @ViewChild(MatSort) sort: MatSort = new MatSort;
 
@@ -50,13 +50,12 @@ export class WebsiteDetailComponent implements OnInit {
   ngOnInit(): void {
     const addWebsiteAsync = async () => {
       this.getWebsite();
-      await sleep(200);
+      await sleep(300);
       this.getPages();
       await sleep(200);
       this.getWebsiteData();
       await sleep(200);
     };
-    
     addWebsiteAsync();
   }
 

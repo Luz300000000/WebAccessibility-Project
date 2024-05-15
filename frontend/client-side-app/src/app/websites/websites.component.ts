@@ -31,10 +31,9 @@ export class WebsitesComponent implements OnInit {
   ngOnInit(): void {
     const getWebsitesAsync = async () => {
       this.getWebsites();
-      await sleep(3000);
+      await sleep(10000);
       this.getWebsites();
     };
-    
     getWebsitesAsync();
   }
 

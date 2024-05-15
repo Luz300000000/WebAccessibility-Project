@@ -104,7 +104,7 @@ function websiteData(pagesData) {
 
   let pagesLen = pagesData.length;
   let websiteData = {
-    "no-errors": [pagesNoErrors, getRatio(pagesNoErrors, pagesLen)],
+    "no_errors": [pagesNoErrors, getRatio(pagesNoErrors, pagesLen)],
     "errors": [pagesErrors, getRatio(pagesErrors, pagesLen)],
     "errorsA": [pagesErrorsA, getRatio(pagesErrorsA, pagesLen)],
     "errorsAA": [pagesErrorsAA, getRatio(pagesErrorsAA, pagesLen)],

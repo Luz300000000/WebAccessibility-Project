@@ -1,10 +1,20 @@
 .card-container {
-	height: 55%;
+	height: 85%;
 	display: flex;
 	align-content: baseline;
+	zoom: 0.90;
 }
 
 .tab-container {
+	width: 100%;
+}
+
+.table-container {
+	height: 250px;
+	overflow: auto;
+}
+  
+table {
 	width: 100%;
 }
 
@@ -35,5 +45,5 @@ mat-card-actions {
 }
 
 form {
-	height: 150px;
+	height: 170px;
 }

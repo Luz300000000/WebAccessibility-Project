@@ -64,7 +64,7 @@ export class WebsiteFormComponent {
     if (!url || !websiteURL) return;
     else {
       this.pageService
-        .addPage({ url, websiteURL, createdDate } as Page)
+        .addPage({ url, websiteURL, createdDate, state:'Por avaliar' } as Page)
         .subscribe();
     }
   }

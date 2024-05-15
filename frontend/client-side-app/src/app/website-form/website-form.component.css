@@ -4,6 +4,7 @@
 
 .card-container {
     height: 80%;
+	zoom: 0.90;
 }
 
 .mat-radio-button {

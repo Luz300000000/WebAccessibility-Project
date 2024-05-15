@@ -7,6 +7,7 @@ import { Page } from '../page';
 import { sleep } from '../util';
 import { EvaluationService } from '../evaluation.service';
 import { Evaluation } from '../evaluation';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-evaluation-form',
@@ -27,7 +28,8 @@ export class EvaluationFormComponent implements OnInit {
   constructor(
     private websiteService: WebsiteService,
     private pageService: PageService,
-    private evaluationService: EvaluationService
+    private evaluationService: EvaluationService,
+    private _snackBar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
@@ -81,6 +83,8 @@ export class EvaluationFormComponent implements OnInit {
   submitEvaluation(): void {
     
     const startEvaluationAsync = async () => {
+
+      this._snackBar.open("Started evaluating pages...", "OK");
       
       let pages = this.getSelectedPages();
       this.getSelectedWebsite();
@@ -100,25 +104,34 @@ export class EvaluationFormComponent implements OnInit {
       while (this.evaluations.length !== pages.length)
         await sleep(1);
 
+      
       const evaluationDateTime = new Date().toISOString().slice(0, 19).replace('T', ' ');
-
       // --- update after evaluations ---
       // website
       this.website!.lastEvaluationDate = evaluationDateTime;
-      this.website!.state = "Avaliado";
       this.updateWebsite();
       // pages
       console.log(this.evaluations);
       pages.forEach(page => {
-        page.lastEvaluationDate = evaluationDateTime;
-          this.evaluations.forEach(evaluation => {
+        this.evaluations.forEach(evaluation => {
+          if (evaluation === undefined) {
+            page.state = 'Erro na avaliação';
+          } else {
+            if (this.website!.state !== "Avaliado") {
+              this.website!.state = "Avaliado";
+              this.updateWebsite();
+            }
+            
             if (evaluation.pageURL === page.url) {
               if (evaluation.pageData.errorsAAA > 0)
                 page.state = 'Não conforme';
               else
-                page.state = 'Conforme';
+              page.state = 'Conforme';
             }
-          });
+          }
+          
+        });
+        page.lastEvaluationDate = evaluationDateTime;
         this.updatePage(page);
       });
     }

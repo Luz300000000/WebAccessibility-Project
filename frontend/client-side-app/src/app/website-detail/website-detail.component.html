@@ -26,77 +26,80 @@
 				  </mat-list>
 			</mat-tab>
 			<mat-tab label="Website Pages">
-				<table mat-table [dataSource]="pages" matSort (matSortChange)="sortData($event)">
+        <div class="table-container">
+          <table mat-table [dataSource]="pages" matSort (matSortChange)="sortData($event)">
 
-					<!-- Checkbox Column -->
-					<ng-container matColumnDef="select">
-					  <th mat-header-cell *matHeaderCellDef>
-						<div class="header-buttons">
-							<mat-checkbox (change)="$event ? toggleAllRows() : null"
-										  [checked]="selection.hasValue() && isAllSelected()"
-										  [indeterminate]="selection.hasValue() && !isAllSelected()"
-										  [aria-label]="checkboxLabel()"
-										  color="primary">
-							</mat-checkbox>
-							<button id="delete-pages"mat-icon-button aria-label="Delete page icon"
-									color="primary"
-									#tooltip="matTooltip"
-									matTooltipPosition="right"
-									matTooltip="Delete selected page(s)"
-									[disabled]="selection.selected.length == 0"
-									(click)="deleteSelectedPages()">
-								<mat-icon>delete</mat-icon>
-							</button>
-						</div>
-					  </th>
-					  <td mat-cell *matCellDef="let row">
-						<mat-checkbox (click)="$event.stopPropagation()"
-									  (change)="$event ? selection.toggle(row) : null"
-									  [checked]="selection.isSelected(row)"
-									  [aria-label]="checkboxLabel(row)"
-									  color="primary">
-						</mat-checkbox>
-					  </td>
-					</ng-container>
-				  
-					<!-- Data Columns -->
-					<ng-container matColumnDef="url">
-					  <th mat-header-cell *matHeaderCellDef> URL </th>
-					  <td mat-cell *matCellDef="let website"> {{website.url}} </td>
-					</ng-container>
-				  
-					<ng-container matColumnDef="createdDate">
-					  <th mat-header-cell *matHeaderCellDef>
-						<div mat-sort-header>
-						  Data de Registo
-						</div>
-					  </th>
-					  <td mat-cell *matCellDef="let website"> {{website.createdDate}} </td>
-					</ng-container>
-				  
-					<ng-container matColumnDef="lastEvaluationDate">
-					  <th mat-header-cell *matHeaderCellDef>
-						<div mat-sort-header>
-						  Data da Última Avaliação
-						</div>
-					  </th>
-					  <td mat-cell *matCellDef="let website"> {{website.lastEvaluationDate}} </td>
-					</ng-container>
-				  
-					<ng-container matColumnDef="state">
-					  <th mat-header-cell *matHeaderCellDef> Estado de Monitorização </th>
-					  <td mat-cell *matCellDef="let website"> {{website.state}} </td>
-					</ng-container>
-				  
-					<tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-					<tr mat-row *matRowDef="let row; columns: displayedColumns;"
-						(click)="selection.toggle(row)">
-					</tr>
-
-				</table>
+            <!-- Checkbox Column -->
+            <ng-container matColumnDef="select">
+              <th mat-header-cell *matHeaderCellDef>
+              <div class="header-buttons">
+                <mat-checkbox (change)="$event ? toggleAllRows() : null"
+                        [checked]="selection.hasValue() && isAllSelected()"
+                        [indeterminate]="selection.hasValue() && !isAllSelected()"
+                        [aria-label]="checkboxLabel()"
+                        color="primary">
+                </mat-checkbox>
+                <button id="delete-pages"mat-icon-button aria-label="Delete page icon"
+                    color="primary"
+                    #tooltip="matTooltip"
+                    matTooltipPosition="right"
+                    matTooltip="Delete selected page(s)"
+                    [disabled]="selection.selected.length == 0"
+                    (click)="deleteSelectedPages()">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+              </th>
+              <td mat-cell *matCellDef="let row">
+              <mat-checkbox (click)="$event.stopPropagation()"
+                      (change)="$event ? selection.toggle(row) : null"
+                      [checked]="selection.isSelected(row)"
+                      [aria-label]="checkboxLabel(row)"
+                      color="primary">
+              </mat-checkbox>
+              </td>
+            </ng-container>
+            
+            <!-- Data Columns -->
+            <ng-container matColumnDef="url">
+              <th mat-header-cell *matHeaderCellDef> URL </th>
+              <td mat-cell *matCellDef="let website"> {{website.url}} </td>
+            </ng-container>
+            
+            <ng-container matColumnDef="createdDate">
+              <th mat-header-cell *matHeaderCellDef>
+              <div mat-sort-header>
+                Data de Registo
+              </div>
+              </th>
+              <td mat-cell *matCellDef="let website"> {{website.createdDate}} </td>
+            </ng-container>
+            
+            <ng-container matColumnDef="lastEvaluationDate">
+              <th mat-header-cell *matHeaderCellDef>
+              <div mat-sort-header>
+                Data da Última Avaliação
+              </div>
+              </th>
+              <td mat-cell *matCellDef="let website"> {{website.lastEvaluationDate}} </td>
+            </ng-container>
+            
+            <ng-container matColumnDef="state">
+              <th mat-header-cell *matHeaderCellDef> Estado de Monitorização </th>
+              <td mat-cell *matCellDef="let website"> {{website.state}} </td>
+            </ng-container>
+            
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+              (click)="selection.toggle(row)">
+            </tr>
+  
+          </table>
+        </div>
 			</mat-tab>
 			<mat-tab label="Website Accessibility">
-				<div *ngIf="websiteData !== undefined">
+
+				<div *ngIf="websiteData?.errorsAA[1] !== null">
 					<mat-accordion>
 						<mat-expansion-panel>
 							<mat-expansion-panel-header>
@@ -107,8 +110,8 @@
 								Total and percentage of pages with no accessibility errors
 							</mat-panel-description>
 							</mat-expansion-panel-header>
-							<p><strong>Total:</strong> {{websiteData['no-errors'][0]}}</p>
-							<p><strong>Percentage:</strong> {{websiteData['no-errors'][1]}}%</p>
+							<p><strong>Total:</strong> {{websiteData?.no_errors[0]}}</p>
+							<p><strong>Percentage:</strong> {{websiteData?.no_errors[1]}}%</p>
 						</mat-expansion-panel>
 
 						<mat-expansion-panel>
@@ -120,8 +123,8 @@
 								Total and percentage of pages with at least one accessibility error
 							</mat-panel-description>
 							</mat-expansion-panel-header>
-							<p><strong>Total:</strong> {{websiteData.errors[0]}}</p>
-							<p><strong>Percentage:</strong> {{websiteData.errors[1]}}%</p>
+							<p><strong>Total:</strong> {{websiteData?.errors[0]}}</p>
+							<p><strong>Percentage:</strong> {{websiteData?.errors[1]}}%</p>
 						</mat-expansion-panel>
 
 						<mat-expansion-panel>
@@ -133,8 +136,8 @@
 								Total and percentage of pages with at least one accessibility A error
 							</mat-panel-description>
 							</mat-expansion-panel-header>
-							<p><strong>Total:</strong> {{websiteData.errorsA[0]}}</p>
-							<p><strong>Percentage:</strong> {{websiteData.errorsA[1]}}%</p>
+							<p><strong>Total:</strong> {{websiteData?.errorsA[0]}}</p>
+							<p><strong>Percentage:</strong> {{websiteData?.errorsA[1]}}%</p>
 						</mat-expansion-panel>
 
 						<mat-expansion-panel>
@@ -146,8 +149,8 @@
 								Total and percentage of pages with at least one accessibility AA error
 							</mat-panel-description>
 							</mat-expansion-panel-header>
-							<p><strong>Total:</strong> {{websiteData.errorsAA[0]}}</p>
-							<p><strong>Percentage:</strong> {{websiteData.errorsAA[1]}}%</p>
+							<p><strong>Total:</strong> {{websiteData?.errorsAA[0]}}</p>
+							<p><strong>Percentage:</strong> {{websiteData?.errorsAA[1]}}%</p>
 						</mat-expansion-panel>
 
 						<mat-expansion-panel>
@@ -159,11 +162,15 @@
 								Total and percentage of pages with at least one accessibility AAA error
 							</mat-panel-description>
 							</mat-expansion-panel-header>
-							<p><strong>Total:</strong> {{websiteData.errorsAAA[0]}}</p>
-							<p><strong>Percentage:</strong> {{websiteData.errorsAAA[1]}}%</p>
+							<p><strong>Total:</strong> {{websiteData?.errorsAAA[0]}}</p>
+							<p><strong>Percentage:</strong> {{websiteData?.errorsAAA[1]}}%</p>
 						</mat-expansion-panel>
 					</mat-accordion>
 				</div>
+				<div *ngIf="websiteData?.errorsAA[1] === null">
+					<span>The pages of this website haven't been evaluated.</span>
+				</div>
+
 			</mat-tab>
 			<mat-tab label="Add New Pages">
 				<form (ngSubmit)="onSubmit();">

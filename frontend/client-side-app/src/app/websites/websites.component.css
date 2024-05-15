@@ -1,10 +1,14 @@
+body {
+  zoom: 0.90;
+}
+
 table {
 	width: 100%;
 }
   
 .mat-mdc-form-field {
-font-size: 14px;
-width: 100%;
+  font-size: 14px;
+  width: 100%;
 }
 
 td, th {

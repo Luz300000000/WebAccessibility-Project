@@ -7,6 +7,7 @@ const { default: mongoose } = require("mongoose");
 const { QualWeb, generateEARLReport } = require('@qualweb/core');
 
 const Evaluation = require("../models/evaluation");
+const Page = require("../models/page");
 
 const process = require("../processDataAux");
 
@@ -143,7 +144,10 @@ exports.evaluation_post = [
       await evaluation.save();
       res.send(evaluation);
     } else {
-      return res.status(400).json({ errors: errors.array() });
+      console.log("ERROR IN EVALUATION POST");
+      const pageError = await Page.findOneAndUpdate({ url: pageURL }, {state: 'Erro na avaliação'}).exec();
+      await pageError.save();
+      res.status(500).json({ errors: errors.array() });
     }
   })
 ];
@@ -151,14 +155,14 @@ exports.evaluation_post = [
 /** PUT evaluation by id */
 exports.evaluation_put = asyncHandler(async (req, res, next) => {
   try {
-      const evaluation = await Evaluation.findByIdAndUpdate(req.params.id, req.body, { new: true }).exec();
-      if (!evaluation) {
-          const err = new Error(`Evaluation with id ${req.params.id} not found.`);
-          err.status = 404;
-          return next(err);
-      }
-  await evaluation.save();
-      res.send(evaluation);
+    const evaluation = await Evaluation.findByIdAndUpdate(req.params.id, req.body, { new: true }).exec();
+    if (!evaluation) {
+        const err = new Error(`Evaluation with id ${req.params.id} not found.`);
+        err.status = 404;
+        return next(err);
+    }
+    await evaluation.save();
+    res.send(evaluation);
   } catch (error) {
       console.error('Error updating evaluation:', error);
       next(error);

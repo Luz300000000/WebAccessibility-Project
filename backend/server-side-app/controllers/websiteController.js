@@ -13,13 +13,11 @@ exports.websites_list = asyncHandler(async (req, res, next) => {
     // Check if any page has an error in evaluation and update state
     await Promise.all(websites.map(async (website) => {
       const websitePages = await Page.find({ websiteURL: website.url }).exec();
-      console.log(websitePages);
       websitePages.forEach(page => {
         if (page.state === 'Erro na avaliação')
             website.state = 'Erro na avaliação';
       });
     }));
-
 		res.send(websites);
 	} catch (error) {
 		console.error(error);
@@ -36,6 +34,13 @@ exports.website_get = asyncHandler(async (req,res,next) => {
 		err.status = 404;
 		return next(err);
 	}
+
+	const websitePages = await Page.find({ websiteURL: website.url }).exec();
+      websitePages.forEach(page => {
+        if (page.state === 'Erro na avaliação')
+            website.state = 'Erro na avaliação';
+      });
+
 	res.send(website);
 });
 
@@ -56,6 +61,12 @@ exports.websiteUrl_get = asyncHandler(async (req,res,next) => {
         err.status = 404;
         return next(err);
     }
+
+	const websitePages = await Page.find({ websiteURL: website.url }).exec();
+      websitePages.forEach(page => {
+        if (page.state === 'Erro na avaliação')
+            website.state = 'Erro na avaliação';
+      });
 
     res.send(website);
 });
