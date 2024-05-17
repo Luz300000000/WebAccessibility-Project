@@ -12,6 +12,7 @@
   - Total and percentage of pages with at least one accessibility A error
   - Total and percentage of pages with at least one accessibility AA error
   - Total and percentage of pages with at least one accessibility AAA error
+  - List of the top 10 most common accessibility errors considering every page evaluated
 - All websites, pages and evaluations are kept in the DB
 ---
 ### Additional Note
