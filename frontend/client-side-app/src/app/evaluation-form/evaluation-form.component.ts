@@ -119,7 +119,7 @@ export class EvaluationFormComponent implements OnInit {
           } else {
             this.website!.state = "Avaliado";
               
-              if (evaluation.pageData.errorsAAA > 0)
+              if (evaluation.pageData.errorsA > 0 || evaluation.pageData.errorsAA > 0)
                 page.state = 'Não conforme';
               else
                 page.state = 'Conforme';

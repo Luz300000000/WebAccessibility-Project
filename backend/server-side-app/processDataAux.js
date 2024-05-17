@@ -75,7 +75,7 @@ function mostCommonErrors(report, pagesLen) {
 }
 
 function getRatio(counter, pagesLen) {
-  return (counter / pagesLen) * 100;
+  return parseFloat(((counter / pagesLen) * 100).toFixed(2));
 }
 
 /** Total and percentage of pages for every accessibility indicator */
