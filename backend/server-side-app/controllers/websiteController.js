@@ -13,9 +13,13 @@ exports.websites_list = asyncHandler(async (req, res, next) => {
     // Check if any page has an error in evaluation and update state
     await Promise.all(websites.map(async (website) => {
       const websitePages = await Page.find({ websiteURL: website.url }).exec();
-      websitePages.forEach(page => {
-        if (page.state === 'Erro na avaliação')
-            website.state = 'Erro na avaliação';
+      websitePages.some(async page => {
+        if (page.state === 'Erro na avaliação') {
+			const websiteUpdated = await Website.findOneAndUpdate({ url: website.url }, {state: 'Erro na avaliação'}, {new: true}).exec();
+			await websiteUpdated.save();
+			return true;
+		}
+		return false;
       });
     }));
 		res.send(websites);
@@ -36,9 +40,13 @@ exports.website_get = asyncHandler(async (req,res,next) => {
 	}
 
 	const websitePages = await Page.find({ websiteURL: website.url }).exec();
-      websitePages.forEach(page => {
-        if (page.state === 'Erro na avaliação')
-            website.state = 'Erro na avaliação';
+      websitePages.some(async page => {
+        if (page.state === 'Erro na avaliação') {
+			const websiteUpdated = await Website.findOneAndUpdate({ url: website.url }, {state: 'Erro na avaliação'}, {new: true}).exec();
+			await websiteUpdated.save();
+			return true;
+		}
+		return false;
       });
 
 	res.send(website);

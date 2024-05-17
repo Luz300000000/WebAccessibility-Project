@@ -51,13 +51,17 @@ exports.evaluationsWebsiteData_get = asyncHandler(async (req, res, next) => {
   }
 
   // Gather all pages evaluations from this website
+  // Retrieve 10 most common accessibility errors
   let pagesData = [];
+  let pagesErrorsMaps = [];
   evaluations.forEach(evaluation => {
     pagesData.push(evaluation.pageData);
+    pagesErrorsMaps.push(evaluation.pageData['failed-rules-occurrences']);
   });
+  const mostCommonErrorsMap = process.mergeSortPageErrorsMaps(pagesErrorsMaps);
 
   // Process previous data to create websiteData
-  const websiteData = process.websiteData(pagesData);
+  const websiteData = process.websiteData(pagesData, mostCommonErrorsMap);
   res.send(websiteData);
 });
 
@@ -145,7 +149,7 @@ exports.evaluation_post = [
       res.send(evaluation);
     } else {
       console.log("ERROR IN EVALUATION POST");
-      const pageError = await Page.findOneAndUpdate({ url: pageURL }, {state: 'Erro na avaliação'}).exec();
+      const pageError = await Page.findOneAndUpdate({ url: pageURL }, {state: 'Erro na avaliação'}, {new: true}).exec();
       await pageError.save();
       res.status(500).json({ errors: errors.array() });
     }
@@ -209,17 +213,13 @@ const generateReport = (async (pageURL) => {
 
 /** Process data of a generated report according to the required indicators in frontend */
 const processData = (report, pageURL) => {
-  const countErrorTypes = process.calculateErrorTypes(report[`${pageURL}`]);
+  const errorCounters = process.getErrorCounters(report[`${pageURL}`]);
   let pageData = {
     "contains-errors": process.containsErrors(report[`${pageURL}`]),
-    "errorsA": countErrorTypes[0],
-    "errorsAA": countErrorTypes[1],
-    "errorsAAA": countErrorTypes[2]
+    "errorsA": errorCounters[0],
+    "errorsAA": errorCounters[1],
+    "errorsAAA": errorCounters[2],
+    "failed-rules-occurrences": errorCounters[3]
   };
-
-  // let websiteData = process.websiteData(pagesData);
-  // TODO: insert mostCommonErrors list in websiteData
-
-  // return [websiteData, pagesData];
   return pageData;
 };

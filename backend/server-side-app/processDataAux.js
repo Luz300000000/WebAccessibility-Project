@@ -7,15 +7,16 @@ function containsErrors(report) {
 }
 
 /** Returns counter errors of types A, AA and AAA in a page*/
-function calculateErrorTypes(report) {
+function getErrorCounters(report) {
   let countA = 0;
   let countAA = 0;
   let countAAA = 0;
+  let failedRulesMap = new Map();
 
   // act-rules assertions
   let assertionsAct = report.modules['act-rules'].assertions;
   for (let assertion in assertionsAct) {
-    
+
     // count failed results
     let failed = 0;
     let results = assertionsAct[`${assertion}`].results;
@@ -25,8 +26,11 @@ function calculateErrorTypes(report) {
     }
 
     if (failed > 0) {
-      let rules = assertionsAct[`${assertion}`].metadata['success-criteria'];
+      // count failed rules occurrences
+      failedRulesMap.set(assertion, failed);
 
+      // Count A, AA, AAA errors
+      let rules = assertionsAct[`${assertion}`].metadata['success-criteria'];
       for (let i = 0; i < rules.length; i++) {
         let level = rules[i].level;
         if (level === 'A')
@@ -52,6 +56,10 @@ function calculateErrorTypes(report) {
     }
 
     if (failed > 0) {
+      // count failed rules occurrences
+      failedRulesMap.set(assertion, failed);
+
+      // Count A, AA, AAA errors
       let rules = assertionsWCAG[`${assertion}`].metadata['success-criteria'];
 
       for (let i = 0; i < rules.length; i++) {
@@ -65,13 +73,33 @@ function calculateErrorTypes(report) {
       }
     }
   }
-  return [countA, countAA, countAAA];
+
+  const sortedMapEntries = Array.from(failedRulesMap.entries()).sort((a, b) => b[1] - a[1]);
+  const sortedFailedRules = new Map(sortedMapEntries.slice(0, 10));
+
+  return [countA, countAA, countAAA, sortedFailedRules];
+  // return [countA, countAA, countAAA];
 }
 
 /** Returns List of the 10 most common accessibility errors across all evaluated website pages */
-function mostCommonErrors(report, pagesLen) {
-  // TODO
-  return [];
+function mergeSortPageErrorsMaps(pagesErrorsMaps) {
+  const combinedMap = new Map();
+  console.log(pagesErrorsMaps);
+
+  for (let pageEntry of Object.entries(pagesErrorsMaps)) {
+    for (let [rule, count] of Object.entries(pageEntry[1])) {
+      if (combinedMap.has(rule)) {
+          combinedMap.set(rule, combinedMap.get(rule) + count);
+      } else {
+          combinedMap.set(rule, count);
+      }
+    }
+  }
+  
+  // Sort combined map
+  const sortedEntries = Array.from(combinedMap.entries()).sort((a, b) => b[1] - a[1]).slice(0, 10);
+
+  return sortedEntries;
 }
 
 function getRatio(counter, pagesLen) {
@@ -79,7 +107,7 @@ function getRatio(counter, pagesLen) {
 }
 
 /** Total and percentage of pages for every accessibility indicator */
-function websiteData(pagesData) {
+function websiteData(pagesData, mostCommonErrorsMap) {
   let pagesNoErrors = 0;
   let pagesErrors = 0;
   let pagesErrorsA = 0;
@@ -103,19 +131,24 @@ function websiteData(pagesData) {
   });
 
   let pagesLen = pagesData.length;
+
   let websiteData = {
     "no_errors": [pagesNoErrors, getRatio(pagesNoErrors, pagesLen)],
     "errors": [pagesErrors, getRatio(pagesErrors, pagesLen)],
     "errorsA": [pagesErrorsA, getRatio(pagesErrorsA, pagesLen)],
     "errorsAA": [pagesErrorsAA, getRatio(pagesErrorsAA, pagesLen)],
-    "errorsAAA": [pagesErrorsAAA, getRatio(pagesErrorsAAA, pagesLen)]
+    "errorsAAA": [pagesErrorsAAA, getRatio(pagesErrorsAAA, pagesLen)],
+    "most_common_errors": mostCommonErrorsMap
   }
+
+  console.log("MOST COMMON ACCESSIBILITY ERRRORS:\n", mostCommonErrorsMap);
+
   return websiteData;
 }
 
 module.exports = {
   containsErrors,
-  calculateErrorTypes,
-  mostCommonErrors,
+  getErrorCounters,
+  mergeSortPageErrorsMaps,
   websiteData
 };

@@ -9,19 +9,19 @@
 				<mat-list>
 					<mat-list-item>
 					  <span matListItemTitle>URL</span>
-					  <span matListItemLine>{{website?.url}}</span>
+					  <span matListItemLine>{{ website?.url }}</span>
 					</mat-list-item>
 					<mat-list-item>
 					  <span matListItemTitle>Data de Criação</span>
-					  <span matListItemLine>{{website?.createdDate}}</span>
+					  <span matListItemLine>{{ website?.createdDate }}</span>
 					</mat-list-item>
 					<mat-list-item>
 					  <span matListItemTitle>Data da Última Avaliação</span>
-					  <span matListItemLine>{{website?.lastEvaluationDate}}</span>
+					  <span matListItemLine>{{ website?.lastEvaluationDate }}</span>
 					</mat-list-item>
 					<mat-list-item>
 						<span matListItemTitle>Estado de Monitorização</span>
-						<span matListItemLine>{{website?.state}}</span>
+						<span matListItemLine>{{ website?.state }}</span>
 					  </mat-list-item>
 				  </mat-list>
 			</mat-tab>
@@ -63,7 +63,7 @@
             <!-- Data Columns -->
             <ng-container matColumnDef="url">
               <th mat-header-cell *matHeaderCellDef> URL </th>
-              <td mat-cell *matCellDef="let website"> {{website.url}} </td>
+              <td mat-cell *matCellDef="let website"> {{ website.url }} </td>
             </ng-container>
             
             <ng-container matColumnDef="createdDate">
@@ -72,7 +72,7 @@
                 Data de Registo
               </div>
               </th>
-              <td mat-cell *matCellDef="let website"> {{website.createdDate}} </td>
+              <td mat-cell *matCellDef="let website"> {{ website.createdDate }} </td>
             </ng-container>
             
             <ng-container matColumnDef="lastEvaluationDate">
@@ -81,12 +81,12 @@
                 Data da Última Avaliação
               </div>
               </th>
-              <td mat-cell *matCellDef="let website"> {{website.lastEvaluationDate}} </td>
+              <td mat-cell *matCellDef="let website"> {{ website.lastEvaluationDate }} </td>
             </ng-container>
             
             <ng-container matColumnDef="state">
               <th mat-header-cell *matHeaderCellDef> Estado de Monitorização </th>
-              <td mat-cell *matCellDef="let website"> {{website.state}} </td>
+              <td mat-cell *matCellDef="let website"> {{ website.state }} </td>
             </ng-container>
             
             <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
@@ -99,73 +99,91 @@
 			</mat-tab>
 			<mat-tab label="Website Accessibility">
 
-				<div *ngIf="websiteData?.errorsAA[1] !== null">
-					<mat-accordion>
-						<mat-expansion-panel>
-							<mat-expansion-panel-header>
-							<mat-panel-title>
-								Accessibility Indicator (no errors)
-							</mat-panel-title>
-							<mat-panel-description>
-								Total and percentage of pages with no accessibility errors
-							</mat-panel-description>
-							</mat-expansion-panel-header>
-							<p><strong>Total:</strong> {{websiteData?.no_errors[0]}}</p>
-							<p><strong>Percentage:</strong> {{websiteData?.no_errors[1]}}%</p>
-						</mat-expansion-panel>
-
-						<mat-expansion-panel>
-							<mat-expansion-panel-header>
-							<mat-panel-title>
-								Accessibility Indicator (at least one error)
-							</mat-panel-title>
-							<mat-panel-description>
-								Total and percentage of pages with at least one accessibility error
-							</mat-panel-description>
-							</mat-expansion-panel-header>
-							<p><strong>Total:</strong> {{websiteData?.errors[0]}}</p>
-							<p><strong>Percentage:</strong> {{websiteData?.errors[1]}}%</p>
-						</mat-expansion-panel>
-
-						<mat-expansion-panel>
-							<mat-expansion-panel-header>
-							<mat-panel-title>
-								Accessibility Indicator (at least one A error)
-							</mat-panel-title>
-							<mat-panel-description>
-								Total and percentage of pages with at least one accessibility A error
-							</mat-panel-description>
-							</mat-expansion-panel-header>
-							<p><strong>Total:</strong> {{websiteData?.errorsA[0]}}</p>
-							<p><strong>Percentage:</strong> {{websiteData?.errorsA[1]}}%</p>
-						</mat-expansion-panel>
-
-						<mat-expansion-panel>
-							<mat-expansion-panel-header>
-							<mat-panel-title>
-								Accessibility Indicator (at least one AA error)
-							</mat-panel-title>
-							<mat-panel-description>
-								Total and percentage of pages with at least one accessibility AA error
-							</mat-panel-description>
-							</mat-expansion-panel-header>
-							<p><strong>Total:</strong> {{websiteData?.errorsAA[0]}}</p>
-							<p><strong>Percentage:</strong> {{websiteData?.errorsAA[1]}}%</p>
-						</mat-expansion-panel>
-
-						<mat-expansion-panel>
-							<mat-expansion-panel-header>
-							<mat-panel-title>
-								Accessibility Indicator (at least one AAA error)
-							</mat-panel-title>
-							<mat-panel-description>
-								Total and percentage of pages with at least one accessibility AAA error
-							</mat-panel-description>
-							</mat-expansion-panel-header>
-							<p><strong>Total:</strong> {{websiteData?.errorsAAA[0]}}</p>
-							<p><strong>Percentage:</strong> {{websiteData?.errorsAAA[1]}}%</p>
-						</mat-expansion-panel>
-					</mat-accordion>
+				<div class="accessibility-indicators" *ngIf="websiteData?.errorsAA[1] !== null">
+					<div class="accessibility-indicators-container">
+						<mat-accordion>
+							<mat-expansion-panel>
+								<mat-expansion-panel-header>
+								<mat-panel-title>
+									Accessibility Indicator (no errors)
+								</mat-panel-title>
+								<mat-panel-description>
+									Total and percentage of pages with no accessibility errors
+								</mat-panel-description>
+								</mat-expansion-panel-header>
+								<p><strong>Total:</strong> {{ websiteData?.no_errors[0] }}</p>
+								<p><strong>Percentage:</strong> {{ websiteData?.no_errors[1] }}%</p>
+							</mat-expansion-panel>
+	
+							<mat-expansion-panel>
+								<mat-expansion-panel-header>
+								<mat-panel-title>
+									Accessibility Indicator (at least one error)
+								</mat-panel-title>
+								<mat-panel-description>
+									Total and percentage of pages with at least one accessibility error
+								</mat-panel-description>
+								</mat-expansion-panel-header>
+								<p><strong>Total:</strong> {{ websiteData?.errors[0] }}</p>
+								<p><strong>Percentage:</strong> {{ websiteData?.errors[1] }}%</p>
+							</mat-expansion-panel>
+	
+							<mat-expansion-panel>
+								<mat-expansion-panel-header>
+								<mat-panel-title>
+									Accessibility Indicator (at least one A error)
+								</mat-panel-title>
+								<mat-panel-description>
+									Total and percentage of pages with at least one accessibility A error
+								</mat-panel-description>
+								</mat-expansion-panel-header>
+								<p><strong>Total:</strong> {{ websiteData?.errorsA[0] }}</p>
+								<p><strong>Percentage:</strong> {{ websiteData?.errorsA[1] }}%</p>
+							</mat-expansion-panel>
+	
+							<mat-expansion-panel>
+								<mat-expansion-panel-header>
+								<mat-panel-title>
+									Accessibility Indicator (at least one AA error)
+								</mat-panel-title>
+								<mat-panel-description>
+									Total and percentage of pages with at least one accessibility AA error
+								</mat-panel-description>
+								</mat-expansion-panel-header>
+								<p><strong>Total:</strong> {{ websiteData?.errorsAA[0] }}</p>
+								<p><strong>Percentage:</strong> {{ websiteData?.errorsAA[1] }}%</p>
+							</mat-expansion-panel>
+	
+							<mat-expansion-panel>
+								<mat-expansion-panel-header>
+								<mat-panel-title>
+									Accessibility Indicator (at least one AAA error)
+								</mat-panel-title>
+								<mat-panel-description>
+									Total and percentage of pages with at least one accessibility AAA error
+								</mat-panel-description>
+								</mat-expansion-panel-header>
+								<p><strong>Total:</strong> {{ websiteData?.errorsAAA[0] }}</p>
+								<p><strong>Percentage:</strong> {{ websiteData?.errorsAAA[1] }}%</p>
+							</mat-expansion-panel>
+	
+							<mat-expansion-panel>
+								<mat-expansion-panel-header>
+								<mat-panel-title>
+									Accessibility Indicator (most common errors)
+								</mat-panel-title>
+								<mat-panel-description>
+									List of the top 10 most common accessibility errors considering every page evaluated
+								</mat-panel-description>
+								</mat-expansion-panel-header>
+								<mat-list role="list">
+									<mat-list-item role="listitem" *ngFor="let error of websiteData?.most_common_errors; let i = index;">
+										<strong>{{ i + 1 }} - {{ error[0] }}:</strong> {{ error[1] }}
+									</mat-list-item>
+								</mat-list>
+							</mat-expansion-panel>
+						</mat-accordion>
+					</div>
 				</div>
 				<div *ngIf="websiteData?.errorsAA[1] === null">
 					<span>The pages of this website haven't been evaluated.</span>
