@@ -35,34 +35,29 @@ exports.evaluation_get = asyncHandler(async (req, res, next) => {
 
 //** GET evaluations website data */
 exports.evaluationsWebsiteData_get = asyncHandler(async (req, res, next) => {
-  const websiteURL = req.query.websiteURL; // url is passed as a query param
-  if (!websiteURL) {
-    const err = new Error("Website URL is required.");
-    err.status = 400;
-    return next(err);
+  try {
+      const websiteURL = req.query.websiteURL;
+      const websiteData = await fetchWebsiteData(websiteURL);
+      res.send(websiteData);
+  } catch (err) {
+      err.status = err.message.includes('not found') ? 404 : 400;
+      return next(err);
   }
+});
 
-  const evaluations = await Evaluation.find({ websiteURL: websiteURL }).exec();
-
-  if (!evaluations) {
-    const err = new Error(`Evaluation with websiteURL ${websiteURL} not found.`);
-    err.status = 404;
-    return next(err);
+/** GET html file from website evaluations data (json) */
+exports.exportWebsiteData_get = asyncHandler(async (req, res, next) => {
+  try {
+      const websiteURL = req.query.websiteURL;
+      const websiteData = await fetchWebsiteData(websiteURL);
+      const htmlContent = process.getHtmlReport(websiteData, websiteURL);
+      res.setHeader('Content-Disposition', 'attachment; filename="report.html"');
+      res.setHeader('Content-Type', 'text/html');
+      res.send(htmlContent);
+  } catch (err) {
+      err.status = err.message.includes('not found') ? 404 : 400;
+      return next(err);
   }
-
-  // Gather all pages evaluations from this website
-  // Retrieve 10 most common accessibility errors
-  let pagesData = [];
-  let pagesErrorsMaps = [];
-  evaluations.forEach(evaluation => {
-    pagesData.push(evaluation.pageData);
-    pagesErrorsMaps.push(evaluation.pageData['failed-rules-occurrences']);
-  });
-  const mostCommonErrorsMap = process.mergeSortPageErrorsMaps(pagesErrorsMaps);
-
-  // Process previous data to create websiteData
-  const websiteData = process.websiteData(pagesData, mostCommonErrorsMap);
-  res.send(websiteData);
 });
 
 /** GET evaluation by page url */
@@ -223,3 +218,30 @@ const processData = (report, pageURL) => {
   };
   return pageData;
 };
+
+/** Fetch website last evaluation data */
+const fetchWebsiteData = async (websiteURL) => {
+  if (!websiteURL) {
+      throw new Error("Website URL is required.");
+  }
+
+  const evaluations = await Evaluation.find({ websiteURL: websiteURL }).exec();
+
+  if (!evaluations) {
+      throw new Error(`Evaluation with websiteURL ${websiteURL} not found.`);
+  }
+
+  // Gather all pages evaluations from this website
+  // Retrieve 10 most common accessibility errors
+  let pagesData = [];
+  let pagesErrorsMaps = [];
+  evaluations.forEach(evaluation => {
+      pagesData.push(evaluation.pageData);
+      pagesErrorsMaps.push(evaluation.pageData['failed-rules-occurrences']);
+  });
+  const mostCommonErrorsMap = process.mergeSortPageErrorsMaps(pagesErrorsMaps);
+
+  // Process previous data to create websiteData
+  return process.websiteData(pagesData, mostCommonErrorsMap);
+};
+

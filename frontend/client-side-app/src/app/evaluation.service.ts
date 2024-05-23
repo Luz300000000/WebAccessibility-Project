@@ -51,6 +51,17 @@ export class EvaluationService {
     );
   }
 
+  getExportedWebsiteData(websiteURL: string | undefined): Observable<Blob> {
+    if (websiteURL === undefined || !websiteURL.trim())
+      return of();
+
+    const url = `${API_URL}/evaluations/download/website/?websiteURL=${websiteURL}`;
+
+    return this.http.get(url, { responseType: 'blob' })
+      .pipe(catchError(this.handleError<Blob>('getExportedWebsiteData', new Blob()))
+    );
+  }
+
   /** GET evaluation from a pageURL */
   getEvaluationFromPage(pageURL: string | undefined): Observable<Evaluation> {
     if (pageURL === undefined || !pageURL.trim())

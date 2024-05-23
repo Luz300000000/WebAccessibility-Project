@@ -22,6 +22,9 @@ router.get('/pages', page_controller.pages_list);
 /** GET website evaluations data */
 router.get('/evaluations/website', evaluation_controller.evaluationsWebsiteData_get);
 
+/** GET website exported data as html list */
+router.get('/evaluations/download/website', evaluation_controller.exportWebsiteData_get);
+
 /** GET evaluations list */
 router.get('/evaluations', evaluation_controller.evaluations_list);
 

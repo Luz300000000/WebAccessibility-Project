@@ -184,6 +184,10 @@
 							</mat-expansion-panel>
 						</mat-accordion>
 					</div>
+					<button mat-stroked-button color="primary" (click)="exportWebsiteData()">
+						<mat-icon>download</mat-icon>
+						Acessibility Report
+					</button>
 				</div>
 				<div *ngIf="websiteData?.errorsAA[1] === null">
 					<span>The pages of this website haven't been evaluated.</span>
@@ -213,9 +217,6 @@
 	<mat-card-actions align="start" >
 		<button mat-button (click)="goBack()">Back</button>
 		<button id="delete-website" mat-fab extended color="primary" aria-label="Delete Website button with delete icon"
-				#tooltip="matTooltip"
-				matTooltipPosition="below"
-				matTooltip="Delete this website"
 				(click)="confirmDelete('0ms', '0ms')">
 			<mat-icon>delete</mat-icon>
 			Delete Website

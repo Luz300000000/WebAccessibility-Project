@@ -1,3 +1,6 @@
+const json2html = require('node-json2html');
+
+
 /** Returns true if  the page has at least one accessibility error */
 function containsErrors(report) {
     if (report.metadata.failed > 0)
@@ -78,13 +81,11 @@ function getErrorCounters(report) {
   const sortedFailedRules = new Map(sortedMapEntries.slice(0, 10));
 
   return [countA, countAA, countAAA, sortedFailedRules];
-  // return [countA, countAA, countAAA];
 }
 
 /** Returns List of the 10 most common accessibility errors across all evaluated website pages */
 function mergeSortPageErrorsMaps(pagesErrorsMaps) {
   const combinedMap = new Map();
-  console.log(pagesErrorsMaps);
 
   for (let pageEntry of Object.entries(pagesErrorsMaps)) {
     for (let [rule, count] of Object.entries(pageEntry[1])) {
@@ -140,15 +141,103 @@ function websiteData(pagesData, mostCommonErrorsMap) {
     "errorsAAA": [pagesErrorsAAA, getRatio(pagesErrorsAAA, pagesLen)],
     "most_common_errors": mostCommonErrorsMap
   }
-
-  console.log("MOST COMMON ACCESSIBILITY ERRRORS:\n", mostCommonErrorsMap);
-
   return websiteData;
+}
+
+/** Generates HTML template for counter/ratio of accessibility errors indicator */
+function generateErrorsTemplate(title, values) {
+  const template = {
+      '<>': 'div',
+      'html': [
+          {'<>': 'h3', 'html': title},
+          {'<>': 'ul', 'html':
+            `<li><strong>Total:</strong> ${values[0]}</li>`+
+            `<li><strong>Percentage:</strong> ${values[1]}%</li>`
+          }
+      ]
+  };
+  return json2html.render({}, template);
+}
+
+/** Generates HTML template for the list of the most common accessibility errors indicator */
+function generateMostCommonErrorsTemplate(errors) {
+  const template = {
+        '<>': 'div',
+        'html': [
+            {'<>': 'h3', 'html': 'Most common errors'},
+            {'<>': 'table', 'html': [
+                {'<>': 'thead', 'html': '<tr><th>Index</th><th>Rule/Technique Error Code</th><th>Count</th></tr>'},
+                {'<>': 'tbody', 'html': errors.map((error, index )=>
+                  `
+                  <tr>
+                    <td>${index + 1}</td>
+                    <td>${error[0]}</td><td>${error[1]}</td>
+                  </tr>
+                  `
+                ).join('')}
+            ]}
+        ]
+  };
+  return json2html.render({}, template);
+}
+
+function getHtmlReport(data, websiteURL) {
+
+  // Render and generate HTML templates for all accessibility indicators
+  const noErrorsHtml = generateErrorsTemplate('Pages with no errors', data.no_errors);
+  const errorsHtml = generateErrorsTemplate('Pages with errors', data.errors);
+  const errorsAHtml = generateErrorsTemplate('Pages with errors of type A', data.errorsA);
+  const errorsAAHtml = generateErrorsTemplate('Pages with errors of type AA', data.errorsAA);
+  const errorsAAAHtml = generateErrorsTemplate('Pages with errors of type AAA', data.errorsAAA);
+  const mostCommonErrorsHtml = generateMostCommonErrorsTemplate(data.most_common_errors);
+
+  // Combine all the HTML content
+  const htmlContent = `
+  <html>
+  <head>
+    <title>Acessibility Indicators Report</title>
+    <style>
+      body {
+        font-family: Roboto, sans-serif;
+      }
+      table {
+        border-collapse: collapse;
+        width: 45%;
+      }
+      th, td {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Accessibility Indicators Report</h2>
+
+    <h3>Website Evaluated</h3>
+    <span>${websiteURL}</span>
+
+    ${noErrorsHtml}
+    ${errorsHtml}
+    ${errorsAHtml}
+    ${errorsAAHtml}
+    ${errorsAAAHtml}
+    ${mostCommonErrorsHtml}
+  </body>
+  </html>
+  `;
+
+  console.log('HTML report generated:\n', htmlContent);
+  return htmlContent;
 }
 
 module.exports = {
   containsErrors,
   getErrorCounters,
   mergeSortPageErrorsMaps,
-  websiteData
+  websiteData,
+  getHtmlReport
 };

@@ -19,6 +19,7 @@
     "mongodb": "^5.0.6",
     "mongoose": "^8.3.2",
     "morgan": "~1.9.1",
+    "node-json2html": "^3.0.0",
     "pug": "^3.0.2"
   },
   "devDependencies": {

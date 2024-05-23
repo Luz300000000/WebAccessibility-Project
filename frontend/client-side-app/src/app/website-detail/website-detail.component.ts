@@ -138,6 +138,20 @@ export class WebsiteDetailComponent implements OnInit {
     deleteEvaluationAsync();
   }
 
+  exportWebsiteData(): void {
+    this.evaluationService.getExportedWebsiteData(this.website?.url).subscribe(
+      (blob: Blob) => {
+        const downloadURL = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = downloadURL;
+        link.download = 'report.html';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    );
+  }
+
   goBack(): void {
     this.location.back();
   }
