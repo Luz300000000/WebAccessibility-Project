@@ -1,5 +1,5 @@
 ## Description
-- The main goal of this project is to develop a web accessibility monitoring platform, aimed at website webmasters, which allows the evaluation and continuous monitoring of the accessibility of web pages. The platform must be able to receive as input the address of a website and the specific pages to be monitored, providing indicators relating to the accessibility of these pages.
+- The main goal of this project is to develop a web accessibility monitoring platform, aimed at website webmasters, which allows the evaluation and continuous accessibility monitoring of web pages. The platform must be able to receive as input the address of a website and the specific pages to be monitored, providing indicators relating to the accessibility of these pages.
 
 ## Main Features
 - Register websites and pages (associated to websites) to be monitored
