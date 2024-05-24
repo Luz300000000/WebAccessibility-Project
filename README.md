@@ -6,18 +6,13 @@
 - Delete selected websites and pages (along with their evaluations)
 - Initiate a new evaluation by choosing a website and at least one page registered in the website domain
 - View detailed information about a website, including the list of pages, the website URL, the data of registration, the date of the last evaluation performed to any of its pages, the current state ('To be evaluated'; 'Evaluating'; 'Evaluated'; 'Error in evaluation') and some stats about the last evaluation performed
-- The accessibility stats present in the last evaluation of a website include the following indicators:
-  - Total and percentage of pages with no accessibility errors
-  - Total and percentage of pages with at least one accessibility error
-  - Total and percentage of pages with at least one accessibility A error
-  - Total and percentage of pages with at least one accessibility AA error
-  - Total and percentage of pages with at least one accessibility AAA error
-  - List of the top 10 most common accessibility errors considering every page evaluated
+- Statistics for the last evaluation performed in a website, according to some accessibility indicators
+  - These statistics can also be downloaded as an HTML file
 - All websites, pages and evaluations are kept in the DB
 ---
 ### Additional Note
 - **To run the project**
-  - Prepare mongo server set the URI in the backend (`app.js`) as the following:
+  - Prepare a mongo server and set the URI in the backend (`app.js`) as the following:
 ```
 const mongoDB_URI = <mongo-connection-string>;
 ```
