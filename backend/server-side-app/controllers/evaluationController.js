@@ -240,11 +240,7 @@ const fetchWebsiteData = async (websiteURL) => {
   let pagesErrorsMaps = [];
   evaluations.forEach(evaluation => {
       pagesData.push(evaluation.pageData);
-<<<<<<< Updated upstream
-      pagesErrorsMaps.push(evaluation.pageData['failed-rules-occurrences']);
-=======
       pagesErrorsMaps.push(evaluation.pageData['failed_rules_occurrences']);
->>>>>>> Stashed changes
   });
   const mostCommonErrorsMap = process.mergeSortPageErrorsMaps(pagesErrorsMaps);
 

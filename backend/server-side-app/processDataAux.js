@@ -81,8 +81,6 @@ function getErrorCounters(report) {
   const sortedFailedRules = new Map(sortedMapEntries.slice(0, 10));
 
   return [countA, countAA, countAAA, sortedFailedRules];
-<<<<<<< Updated upstream
-=======
 }
 
 function getDetailedTests(report) {
@@ -172,7 +170,6 @@ function getMetadataStats(report) {
   console.log(stats);
 
   return stats;
->>>>>>> Stashed changes
 }
 
 /** Returns List of the 10 most common accessibility errors across all evaluated website pages */
