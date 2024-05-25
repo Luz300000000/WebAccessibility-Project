@@ -1,0 +1,16 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow-y: auto;
+}
+
+.mat-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+mat-expansion-panel {
+  margin-bottom: 5px;
+}

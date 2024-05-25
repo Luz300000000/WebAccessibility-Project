@@ -1,7 +1,7 @@
 <mat-card>
 	<mat-card-header>
-		<mat-card-title>Evaluation Configuration</mat-card-title>
-		<mat-card-subtitle>Initiate a new evaluation for the selected website and page(s)</mat-card-subtitle>
+		<mat-card-title>Search Configuration</mat-card-title>
+		<mat-card-subtitle>Search for a detailed evaluation for the selected page</mat-card-subtitle>
 	</mat-card-header>
 
 	<mat-card-content class="card-container">
@@ -11,7 +11,7 @@
 				<h4>Select a Website</h4>
 				<mat-form-field>
 					<mat-label>Website</mat-label>
-					<mat-select [(ngModel)]="selectedWebsite" [disabled]="websites.length === 0" (selectionChange)="getPages(); resetSelectedPages()" name="website">
+					<mat-select [(ngModel)]="selectedWebsite" [disabled]="websites.length === 0" (selectionChange)="getPages(); resetSelectedPage()" name="website">
 					<mat-option *ngFor="let website of websites" [value]="website.url">
 						{{website.url}}
 					</mat-option>
@@ -20,10 +20,10 @@
 			</div>
 			<!-- form field for pages -->
 			<div>
-				<h4>Select Page(s)</h4>
+				<h4>Select a Page</h4>
 				<mat-form-field id="select-pages">
 					<mat-label>Pages</mat-label>
-					<mat-select [(ngModel)]="selectedPages" [disabled]="selectedWebsite === ''" multiple name="pages">
+					<mat-select [(ngModel)]="selectedPage" [disabled]="selectedWebsite === ''" name="pages">
 					<mat-option *ngFor="let page of pages" [value]="page.url">{{page.url}}</mat-option>
 					</mat-select>
 				</mat-form-field>
@@ -31,9 +31,9 @@
 		</form>
 	</mat-card-content>
 	<mat-card-actions align="start">
-		<button mat-fab extended color="primary" (click)="submitEvaluation()" [disabled]="selectedPages.length === 0 || selectedWebsite === ''">
-			<mat-icon>domain_verification</mat-icon>
-			Initiate Evaluation
+		<button mat-fab extended color="primary" [disabled]="selectedPage === ''" (click)="searchEvaluation()">
+			<mat-icon>search</mat-icon>
+			Search Evaluation
 		</button>
 	</mat-card-actions>
 </mat-card>

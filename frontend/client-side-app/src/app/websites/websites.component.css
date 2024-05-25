@@ -16,7 +16,7 @@ table {
 }
 
 td, th {
-width: 25%;
+  width: 25%;
 }
 
 th.mat-sort-header-sorted {
@@ -28,7 +28,11 @@ th.mat-sort-header-sorted {
 }
 
 .table-container {
+<<<<<<< Updated upstream
   height: 60%;
+=======
+  height: 38em;
+>>>>>>> Stashed changes
   overflow: auto;
 }
 

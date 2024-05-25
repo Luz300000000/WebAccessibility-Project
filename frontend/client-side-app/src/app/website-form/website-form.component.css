@@ -3,8 +3,9 @@
 }
 
 .card-container {
-    height: 80%;
+    height: 60%;
 	zoom: 0.90;
+    overflow: auto;
 }
 
 .mat-radio-button {
@@ -30,5 +31,4 @@ mat-form-field {
   
 .mat-mdc-form-field {
     margin-top: 14px;
-    height: 100%;
 }

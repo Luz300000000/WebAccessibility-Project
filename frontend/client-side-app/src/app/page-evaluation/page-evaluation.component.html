@@ -1,0 +1,110 @@
+<mat-card class="card-container">
+	<mat-card-header>
+		<mat-card-title>Evaluation Details</mat-card-title>
+	</mat-card-header>
+
+	<mat-card-content>
+    <mat-tab-group class="tab-container">
+
+      <mat-tab label="Overall Statistics">
+        <div class="stats">
+          <mat-list>
+            <mat-list-item>
+              <span matListItemTitle>Passed Tests</span>
+              <span matListItemLine><b>Total:</b> {{stats?.passed[0]}}</span>
+              <span matListItemLine><b>Percentage:</b> {{stats?.passed[1]}}%</span>
+            </mat-list-item>
+            <mat-list-item>
+              <span matListItemTitle>Warning Tests</span>
+              <span matListItemLine><b>Total:</b> {{stats?.warning[0]}}</span>
+              <span matListItemLine><b>Percentage:</b> {{stats?.warning[1]}}%</span>
+            </mat-list-item>
+            <mat-list-item>
+              <span matListItemTitle>Failed Tests</span>
+              <span matListItemLine><b>Total:</b> {{stats?.failed[0]}}</span>
+              <span matListItemLine><b>Percentage:</b> {{stats?.failed[1]}}%</span>
+            </mat-list-item>
+            <mat-list-item>
+              <span matListItemTitle>Inapplicable Tests</span>
+              <span matListItemLine><b>Total:</b> {{stats?.inapplicable[0]}}</span>
+              <span matListItemLine><b>Percentage:</b> {{stats?.inapplicable[1]}}%</span>
+            </mat-list-item>
+          </mat-list>
+        </div>
+        
+      </mat-tab>
+
+      <mat-tab label="List of Tests">
+        <div class="filters">
+          <mat-form-field appearance="outline">
+            <mat-label>Filter by Type</mat-label>
+            <mat-select [(ngModel)]="typeFilter" (selectionChange)="applyTypeFilter()">
+              <mat-option value="">All</mat-option>
+              <mat-option value="ACT Rule">ACT Rule</mat-option>
+              <mat-option value="WCAG Technique">WCAG Technique</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Filter by Result</mat-label>
+            <mat-select [(ngModel)]="resultFilter" (selectionChange)="applyResultFilter()">
+              <mat-option value="">All</mat-option>
+              <mat-option value="passed">Passed</mat-option>
+              <mat-option value="warning">Warning</mat-option>
+              <mat-option value="failed">Failed</mat-option>
+              <mat-option value="inapplicable">Inapplicable</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Filter by Level</mat-label>
+            <mat-select [(ngModel)]="levelFilter" (selectionChange)="applyLevelFilter()">
+              <mat-option value="">All</mat-option>
+              <mat-option value="A">A</mat-option>
+              <mat-option value="AA">AA</mat-option>
+              <mat-option value="AA">AAA</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+    
+        <div class="table-container">
+    
+          <table mat-table [dataSource]="filteredTests">
+      
+            <ng-container matColumnDef="code">
+            <th mat-header-cell *matHeaderCellDef> Code </th>
+            <td mat-cell *matCellDef="let test"> {{test.code}} </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="type">
+            <th mat-header-cell *matHeaderCellDef> Type </th>
+            <td mat-cell *matCellDef="let test"> {{test.type}} </td>
+            </ng-container>
+    
+            <ng-container matColumnDef="result">
+            <th mat-header-cell *matHeaderCellDef> Result </th>
+            <td mat-cell *matCellDef="let test"> {{test.result}} </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="levels">
+              <th mat-header-cell *matHeaderCellDef> Levels </th>
+              <td mat-cell *matCellDef="let test">
+                {{ getUniqueLevels(test.levels) }}
+              </td>
+            </ng-container>
+          
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+            <tr mat-row 
+                *matRowDef="let row; columns: displayedColumns;"
+                tabindex="0"
+                (click)="openDetailedTest(row)"
+                (keydown.enter)="openDetailedTest(row)">
+            </tr>
+          </table>
+          </div>
+      </mat-tab>
+    </mat-tab-group>
+	</mat-card-content>
+
+	<mat-card-actions align="start">
+		<button mat-button (click)="goBack()">Back</button>
+	</mat-card-actions>
+</mat-card>

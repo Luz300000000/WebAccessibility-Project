@@ -1,0 +1,11 @@
+<mat-toolbar color="primary">
+  <span>Detailed Tests</span>
+</mat-toolbar>
+<div class="container">
+  <mat-expansion-panel *ngFor="let elem of testData.detailed_results" [hideToggle]="false">
+    <mat-expansion-panel-header>Result: {{ elem.verdict }} </mat-expansion-panel-header>
+    <span style="color: #3f51b5;">Evaluated element:</span>
+    <p>{{ elem.pointer }}</p>
+  </mat-expansion-panel>
+</div>
+

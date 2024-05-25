@@ -34,6 +34,9 @@ import { ConfirmDeleteDialogComponent } from './confirm-delete-dialog/confirm-de
 import { EvaluationFormComponent } from './evaluation-form/evaluation-form.component';
 import { CdkAccordionModule } from '@angular/cdk/accordion';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { SearchEvaluationComponent } from './search-evaluation/search-evaluation.component';
+import { PageEvaluationComponent } from './page-evaluation/page-evaluation.component';
+import { DetailedTestDialogComponent } from './detailed-test-dialog/detailed-test-dialog.component';
 
 
 @NgModule({
@@ -45,6 +48,9 @@ import { MatExpansionModule } from '@angular/material/expansion';
     WebsiteDetailComponent,
     ConfirmDeleteDialogComponent,
     EvaluationFormComponent,
+    SearchEvaluationComponent,
+    PageEvaluationComponent,
+    DetailedTestDialogComponent,
   ],
   imports: [
     BrowserModule,

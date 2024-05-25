@@ -47,12 +47,12 @@ function getErrorCounters(report) {
   }
 
   // wcag-techniques assertions
-  let assertionsWCAG = report.modules['wcag-techniques'].assertions;
-  for (let assertion in assertionsWCAG) {
+  let assertionsWcag = report.modules['wcag-techniques'].assertions;
+  for (let assertion in assertionsWcag) {
     
     // count failed results
     let failed = 0;
-    let results = assertionsWCAG[`${assertion}`].results;
+    let results = assertionsWcag[`${assertion}`].results;
     for (let i = 0; i < results.length; i++) {
       if (results[i].verdict === 'failed')
         failed++;
@@ -63,7 +63,7 @@ function getErrorCounters(report) {
       failedRulesMap.set(assertion, failed);
 
       // Count A, AA, AAA errors
-      let rules = assertionsWCAG[`${assertion}`].metadata['success-criteria'];
+      let rules = assertionsWcag[`${assertion}`].metadata['success-criteria'];
 
       for (let i = 0; i < rules.length; i++) {
         let level = rules[i].level;
@@ -81,6 +81,98 @@ function getErrorCounters(report) {
   const sortedFailedRules = new Map(sortedMapEntries.slice(0, 10));
 
   return [countA, countAA, countAAA, sortedFailedRules];
+<<<<<<< Updated upstream
+=======
+}
+
+function getDetailedTests(report) {
+  let detailedTests = [];
+
+  // act-rules assertions
+  let assertionsAct = report.modules['act-rules'].assertions;
+  for (let assertion in assertionsAct) {
+    let metadata = assertionsAct[`${assertion}`].metadata;
+    let result = metadata.outcome;
+    let levels = [];
+
+    metadata['success-criteria'].forEach(elem => {
+      if (elem.level === 'A')
+        levels.push('A');
+      else if (elem.level === 'AA')
+        levels.push('AA');
+      else
+        levels.push('AAA');
+    });
+
+    let resultsArr = assertionsAct[`${assertion}`].results;
+    let detailedResults = [];
+
+    resultsArr.forEach(elem => {
+      let detailedResult = {
+        "verdict": elem.verdict,
+        "pointer": elem.elements[0].pointer
+      }
+      detailedResults.push(detailedResult);
+    });
+
+    let test = {
+      "code": assertion,
+      "type": "ACT Rule",
+      "result": result,
+      "levels": levels,
+      "detailed_results": detailedResults
+    }
+
+    detailedTests.push(test);
+  }
+
+  // wcag-techniques assertions
+  let assertionsWcag = report.modules['wcag-techniques'].assertions;
+  for (let assertion in assertionsWcag) {
+    let metadata = assertionsWcag[`${assertion}`].metadata;
+    let result = metadata.outcome;
+    let levels = [];
+
+    metadata['success-criteria'].forEach(elem => {
+      if (elem.level === 'A')
+        levels.push('A');
+      else if (elem.level === 'AA')
+        levels.push('AA');
+      else
+        levels.push('AAA');
+    });
+    let test = {
+      "code": assertion,
+      "type": "WCAG Technique",
+      "result": result,
+      "levels": levels
+    }
+    detailedTests.push(test);
+  }
+
+  return detailedTests;
+}
+
+/** Returns metadata stats for all types of results from a page report*/
+function getMetadataStats(report) {
+  let totalPassed = report.metadata.passed;
+  let totalWarning = report.metadata.warning;
+  let totalFailed = report.metadata.failed;
+  let totalInapplicable = report.metadata.inapplicable;
+
+  let totalResults = totalPassed + totalWarning + totalFailed + totalInapplicable;
+
+  let stats = {
+    "passed": [totalPassed, getRatio(totalPassed, totalResults)],
+    "warning": [totalWarning, getRatio(totalWarning, totalResults)],
+    "failed": [totalFailed, getRatio(totalFailed, totalResults)],
+    "inapplicable": [totalInapplicable, getRatio(totalInapplicable, totalResults)],
+  }
+
+  console.log(stats);
+
+  return stats;
+>>>>>>> Stashed changes
 }
 
 /** Returns List of the 10 most common accessibility errors across all evaluated website pages */
@@ -103,8 +195,8 @@ function mergeSortPageErrorsMaps(pagesErrorsMaps) {
   return sortedEntries;
 }
 
-function getRatio(counter, pagesLen) {
-  return parseFloat(((counter / pagesLen) * 100).toFixed(2));
+function getRatio(counter, total) {
+  return parseFloat(((counter / total) * 100).toFixed(2));
 }
 
 /** Total and percentage of pages for every accessibility indicator */
@@ -116,7 +208,7 @@ function websiteData(pagesData, mostCommonErrorsMap) {
   let pagesErrorsAAA = 0;
 
   pagesData.forEach(pageData => {
-    if (pageData['contains-errors'] === false)
+    if (pageData['contains_errors'] === false)
       pagesNoErrors++
     else
       pagesErrors++;
@@ -237,6 +329,8 @@ function getHtmlReport(data, websiteURL) {
 module.exports = {
   containsErrors,
   getErrorCounters,
+  getDetailedTests,
+  getMetadataStats,
   mergeSortPageErrorsMaps,
   websiteData,
   getHtmlReport

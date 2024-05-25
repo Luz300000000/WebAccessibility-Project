@@ -1,0 +1,73 @@
+.card-container {
+  height: 85%;
+}
+
+body {
+  zoom: 0.9;
+}
+
+table {
+  width: 100%;
+}
+
+.mat-mdc-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+td,
+th {
+  width: 25%;
+}
+
+tr:hover {
+  cursor: pointer;
+}
+
+.mat-column-select {
+  overflow: initial;
+}
+
+.table-container {
+  height: 35em;
+  overflow: auto;
+}
+
+.mat-mdc-row:hover {
+  background-color: #f5f5f5;
+}
+
+.filters {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 5em;
+  margin-top: 30px;
+}
+
+.filters mat-form-field {
+  width: 15em;
+}
+
+.stats span {
+  font-size: 1.2em;
+}
+
+mat-list-item {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+mat-list-item span:first-child {
+  font-size: 1.4em;
+  color: #3f51b5;
+  padding-bottom: 10px;
+}
+
+mat-card-actions {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	margin-top: auto;
+  padding-bottom: 10px;
+}

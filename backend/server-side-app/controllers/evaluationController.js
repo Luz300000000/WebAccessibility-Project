@@ -72,8 +72,9 @@ exports.evaluationPage_get = asyncHandler(async (req, res, next) => {
   const evaluation = await Evaluation.findOne({ pageURL: pageURL }).exec();
 
   if (!evaluation) {
-    const msg = `Evaluation with pageURL ${pageURL} not found.`;
-    return next;
+    const err = new Error(`Evaluation with pageURL ${pageURL} not found.`);
+    err.status = 404;
+    return next(err);
   }
 
   res.send(evaluation);
@@ -210,11 +211,13 @@ const generateReport = (async (pageURL) => {
 const processData = (report, pageURL) => {
   const errorCounters = process.getErrorCounters(report[`${pageURL}`]);
   let pageData = {
-    "contains-errors": process.containsErrors(report[`${pageURL}`]),
+    "contains_errors": process.containsErrors(report[`${pageURL}`]),
     "errorsA": errorCounters[0],
     "errorsAA": errorCounters[1],
     "errorsAAA": errorCounters[2],
-    "failed-rules-occurrences": errorCounters[3]
+    "failed_rules_occurrences": errorCounters[3],
+    "metadata_stats": process.getMetadataStats(report[`${pageURL}`]),
+    "detailed_tests": process.getDetailedTests(report[`${pageURL}`])
   };
   return pageData;
 };
@@ -237,7 +240,11 @@ const fetchWebsiteData = async (websiteURL) => {
   let pagesErrorsMaps = [];
   evaluations.forEach(evaluation => {
       pagesData.push(evaluation.pageData);
+<<<<<<< Updated upstream
       pagesErrorsMaps.push(evaluation.pageData['failed-rules-occurrences']);
+=======
+      pagesErrorsMaps.push(evaluation.pageData['failed_rules_occurrences']);
+>>>>>>> Stashed changes
   });
   const mostCommonErrorsMap = process.mergeSortPageErrorsMaps(pagesErrorsMaps);
 

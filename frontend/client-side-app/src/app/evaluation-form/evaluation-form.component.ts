@@ -133,4 +133,16 @@ export class EvaluationFormComponent implements OnInit {
     }
     startEvaluationAsync();
   }
+
+  resetSelectedPages(): void {
+    if (this.selectedPages.length > 0) {
+      this.selectedPages.some(pageURL => {
+        if (!pageURL.includes(this.selectedWebsite))
+          return true;
+        else
+          return false;
+      });
+      this.selectedPages = [];
+    }
+  }
 }
