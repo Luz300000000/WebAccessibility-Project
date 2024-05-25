@@ -8,6 +8,7 @@
 - View detailed information about a website, including the list of pages, the website URL, the data of registration, the date of the last evaluation performed to any of its pages, the current state ('To be evaluated'; 'Evaluating'; 'Evaluated'; 'Error in evaluation') and some stats about the last evaluation performed
 - Statistics for the last evaluation performed in a website, according to some accessibility indicators
   - These statistics can also be downloaded as an HTML file
+- Search for the last evaluation of a specific page and acess more details about that evaluation (each accessibility test performed over an element, stats, etc)
 - All websites, pages and evaluations are kept in the DB
 ---
 ### Additional Note
