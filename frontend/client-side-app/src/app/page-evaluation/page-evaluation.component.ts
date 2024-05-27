@@ -59,8 +59,8 @@ export class PageEvaluationComponent implements OnInit {
       this._snackBar.open("The result of this test is inapplicable.", "OK");
     else {
       this.dialog.open(DetailedTestDialogComponent, {
-        width: '70em',
-        height: '40em',
+        width: '50em',
+        height: '30em',
         data: testData
       });
     }

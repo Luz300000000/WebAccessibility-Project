@@ -1,5 +1,6 @@
 .card-container {
-  height: 85%;
+  height: 85vh;
+  overflow: hidden;
 }
 
 body {
@@ -28,8 +29,8 @@ th.mat-sort-header-sorted {
 }
 
 .table-container {
-  height: 38em;
-  overflow: auto;
+  height: 50vh;
+  overflow-y: auto;
 }
 
 .mat-mdc-row:hover {
