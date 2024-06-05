@@ -139,12 +139,26 @@ function getDetailedTests(report) {
       else
         levels.push('AAA');
     });
+
+    let resultsArr = assertionsAct[`${assertion}`].results;
+    let detailedResults = [];
+
+    resultsArr.forEach(elem => {
+      let detailedResult = {
+        "verdict": elem.verdict,
+        "pointer": elem.elements[0].pointer
+      }
+      detailedResults.push(detailedResult);
+    });
+
     let test = {
       "code": assertion,
       "type": "WCAG Technique",
       "result": result,
-      "levels": levels
+      "levels": levels,
+      "detailed_results": detailedResults
     }
+
     detailedTests.push(test);
   }
 
